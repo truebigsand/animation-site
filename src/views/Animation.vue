@@ -78,7 +78,7 @@ const now_playing = ref({})
 function updateVideo(index) {
 	if (now_page.value.length != 0) {
 		let source = animation_info.value.source[index]
-		now_playing.value['name'] = source.name + ' ' + now_page.value[index]
+		now_playing.value['name'] = source.name + ' 第' + now_page.value[index] + '集'
 		fetch(source.play_info[now_page.value[index] - 1].api)
 			.then(resp => resp.json())
 			.then(json => {
@@ -136,7 +136,7 @@ function updateVideo(index) {
 			{{ animation_info.description }}
 		</template>
 	</n-page-header>
-	<p>{{ now_playing }}</p>
+	<p>{{ now_playing.name }}</p>
 	<div ref="videoRef" class="player"></div>
 	<!-- <VideoPlayer :title="now_playing.name" :video_url="now_playing.url" :thubnail_url="animation_info.picture" /> -->
 	<template v-for="source, index in animation_info.source">
