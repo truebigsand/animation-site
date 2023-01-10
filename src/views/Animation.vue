@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import { NGrid, NGi, NSpace, NLayout, NLayoutHeader, NLayoutContent, NPageHeader, NDivider, NInputGroup, NInput, NButton, NStatistic, NBreadcrumb, NBreadcrumbItem, NAvatar, NImage, NPopover, NPagination } from 'naive-ui'
+import { NGrid, NMessageProvider, NGi, useNotification, NPageHeader, NDivider, NInputGroup, NInput, NButton, NStatistic, NBreadcrumb, NBreadcrumbItem, NAvatar, NImage, NPopover, NPagination } from 'naive-ui'
 import { useRoute } from 'vue-router';
 import Dplayer from 'dplayer'
 
@@ -13,14 +13,8 @@ const animation_info = ref({})
 const videoRef = ref()
 
 onMounted(async () => {
-    window.dplayer = new Dplayer({
-        container: videoRef.value,
-		video: {
-
-		}
-    })
 	var base_api_url = 'https://api.truebigsand.top/cors_anywhere?url=http://103.91.210.141:2515/xgapp.php/v2/video_detail?id='
-	await fetch(base_api_url + id)
+	fetch(base_api_url + id)
 		.then((resp) => resp.json())
 		.then((json) => {
 			let vod_info = json['data']['vod_info']
@@ -70,27 +64,62 @@ onMounted(async () => {
 			animation_info.value = info
 			console.log(info)
 			console.log(vod_info)
+			window.dplayer = new Dplayer({
+				container: videoRef.value,
+				video: {
+					pic: animation_info.picture
+				}
+			})
 			updateVideo(1)
 		})
 })
 
+const notification = useNotification()
 const now_playing = ref({})
 function updateVideo(index) {
 	if (now_page.value.length != 0) {
 		let source = animation_info.value.source[index]
 		now_playing.value['name'] = source.name + ' 第' + now_page.value[index] + '集'
+		notification.info({
+			title: '加载中',
+			content: now_playing.value['name']
+		})
 		fetch(source.play_info[now_page.value[index] - 1].api)
 			.then(resp => resp.json())
 			.then(json => {
 				dplayer.video.src = now_playing.value['url'] = json['url']
+				notification.success({
+					title: '加载成功',
+					content: now_playing.value['name']
+				})
+			})
+			.catch(err => {
+				notification.error({
+					title: '加载失败',
+					content: err
+				})
 			})
 	} else {
 		let source = animation_info.value.source[index]
-		now_playing.value['name'] = source.name + ' ' + 1
+		now_playing.value['name'] = source.name + ' 第1集'
+		notification.info({
+			title: '加载中',
+			content: now_playing.value['name']
+		})
 		fetch(source.play_info[0].api)
-			.then(resp => resp.json())
+		.then(resp => resp.json())
 			.then(json => {
 				dplayer.video.src = now_playing.value['url'] = json['url']
+				notification.success({
+					title: '加载成功',
+					content: now_playing.value['name']
+				})
+			})
+			.catch(err => {
+				notification.error({
+					title: '加载失败',
+					content: err
+				})
 			})
 	}
 }
