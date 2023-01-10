@@ -1,7 +1,7 @@
 <script setup>
 import { NSpace, NLayout, NLayoutHeader, NLayoutContent, NNotificationProvider } from 'naive-ui'
 import { RouterLink, RouterView } from 'vue-router'
-import Header from './src/components/Header.vue'
+import Header from './components/Header.vue'
 </script>
 
 <template>

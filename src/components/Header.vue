@@ -14,12 +14,7 @@ import { NPageHeader, NDivider, NInputGroup, NInput, NButton, NAvatar } from 'na
             看番的地方
         </template>
         <template #extra>
-            <n-input-group>
-                <n-input placeholder="搜索在做了，不要急" />
-                <n-button type="primary">
-                    搜索
-                </n-button>
-            </n-input-group>
+            
         </template>
         <n-divider />
     </n-page-header>

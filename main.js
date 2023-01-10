@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import * as VueRouter from 'vue-router'
 
-import App from './App.vue'
+import App from './src/App.vue'
 import Home from './src/views/Home.vue'
 import Animation from './src/views/Animation.vue'
 

@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import { NGrid, NMessageProvider, NGi, useNotification, NPageHeader, NDivider, NInputGroup, NInput, NButton, NStatistic, NBreadcrumb, NBreadcrumbItem, NAvatar, NImage, NPopover, NPagination } from 'naive-ui'
+import { NGrid, NTag, NGi, NSpace, useNotification, NPageHeader, NDivider, NInputGroup, NInput, NButton, NStatistic, NBreadcrumb, NBreadcrumbItem, NAvatar, NImage, NPopover, NPagination } from 'naive-ui'
 import { useRoute } from 'vue-router';
 import Dplayer from 'dplayer'
 
@@ -82,7 +82,8 @@ function updateVideo(index) {
 		now_playing.value['name'] = source.name + ' 第' + now_page.value[index] + '集'
 		notification.info({
 			title: '加载中',
-			content: now_playing.value['name']
+			content: now_playing.value['name'],
+			duration: 3000
 		})
 		fetch(source.play_info[now_page.value[index] - 1].api)
 			.then(resp => resp.json())
@@ -90,13 +91,15 @@ function updateVideo(index) {
 				dplayer.video.src = now_playing.value['url'] = json['url']
 				notification.success({
 					title: '加载成功',
-					content: now_playing.value['name']
+					content: now_playing.value['name'],
+					duration: 3000
 				})
 			})
 			.catch(err => {
 				notification.error({
 					title: '加载失败',
-					content: err
+					content: err,
+					duration: 3000
 				})
 			})
 	} else {
@@ -104,21 +107,24 @@ function updateVideo(index) {
 		now_playing.value['name'] = source.name + ' 第1集'
 		notification.info({
 			title: '加载中',
-			content: now_playing.value['name']
+			content: now_playing.value['name'],
+			duration: 3000
 		})
 		fetch(source.play_info[0].api)
-		.then(resp => resp.json())
+			.then(resp => resp.json())
 			.then(json => {
 				dplayer.video.src = now_playing.value['url'] = json['url']
 				notification.success({
 					title: '加载成功',
-					content: now_playing.value['name']
+					content: now_playing.value['name'],
+					duration: 3000
 				})
 			})
 			.catch(err => {
 				notification.error({
 					title: '加载失败',
-					content: err
+					content: err,
+					duration: 3000
 				})
 			})
 	}
@@ -149,9 +155,9 @@ function updateVideo(index) {
 			{{ animation_info.name }}
 		</template>
 		<template #header>
-			<n-breadcrumb>
-				<n-breadcrumb-item v-for="tag in animation_info.tag">{{ tag }}</n-breadcrumb-item>
-			</n-breadcrumb>
+			<n-space>
+				<n-tag v-for="tag in animation_info.tag" round>{{ tag }}</n-tag>
+			</n-space>
 		</template>
 		<template #avatar>
 			<n-popover trigger="hover">
