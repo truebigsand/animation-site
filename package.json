@@ -9,7 +9,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.2.3",
     "dplayer": "^1.27.0",
     "vue": "^3.2.45",
     "vue-router": "^4.0.13"
